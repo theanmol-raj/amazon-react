@@ -74,7 +74,7 @@ function App() {
       <Navbar user={user} signout={Signout} />
      <Routes>
       <Route path="/" element={user ? <HomeScreen /> : <LoginScreen login={Signin} />} />
-      <Route path="/product/:slug" element={<ProductScreen user={user} />} />
+      <Route path="/product/:slug/pos/:id" element={<ProductScreen user={user} />} />
       <Route path="/product/cart" element={<Procced user={user} />} />
       <Route path="/admin/add-product" element={<ProductAdder />} />
 

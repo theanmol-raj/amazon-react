@@ -7,8 +7,7 @@ import LoginScreen from "./screens/LoginScreen";
 import ProductScreen from "./screens/ProductScreen";
 import { Routes ,Route } from "react-router-dom";
 import ProductAdder from "./screens/ProductAdder";
-import { doc, getDoc,setDoc ,getFirestore } from "firebase/firestore";
-import Procced from "./screens/Procced";
+import { doc, getDoc ,getFirestore } from "firebase/firestore";
 
 function App() {
   const auth = getAuth(app);
@@ -18,17 +17,7 @@ function App() {
   const [user,SetUser] = useState(()=> auth.currentUser) ;
 
   async function checkFirstTime(){
-    const docRef = doc(db, "Users", user?.uid);
-    const docSnap = await getDoc(docRef);
-
-    if (docSnap.exists()) {
-      console.log("working")
-    } 
-    else{
-      await setDoc(doc(db, "Users", user?.uid), { name : user.displayName ,email : user?.email , cart : [] ,id  : user?.uid}).then(()=>{
-        console.log("user made")
-      }).catch((err)=> console.log(err))
-    }
+    
   }
 
 
@@ -74,8 +63,7 @@ function App() {
       <Navbar user={user} signout={Signout} />
      <Routes>
       <Route path="/" element={user ? <HomeScreen /> : <LoginScreen login={Signin} />} />
-      <Route path="/product/:slug" element={<ProductScreen user={user} />} />
-      <Route path="/product/cart" element={<Procced user={user} />} />
+      <Route path="/product/:slug" element={<ProductScreen />} />
       <Route path="/admin/add-product" element={<ProductAdder />} />
 
      </Routes>

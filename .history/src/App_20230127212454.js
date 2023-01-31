@@ -6,42 +6,18 @@ import Navbar from "./components/Navbar";
 import LoginScreen from "./screens/LoginScreen";
 import ProductScreen from "./screens/ProductScreen";
 import { Routes ,Route } from "react-router-dom";
-import ProductAdder from "./screens/ProductAdder";
-import { doc, getDoc,setDoc ,getFirestore } from "firebase/firestore";
-import Procced from "./screens/Procced";
+
 
 function App() {
   const auth = getAuth(app);
   const provider = new GoogleAuthProvider();
-
-  const db= getFirestore(app)
   const [user,SetUser] = useState(()=> auth.currentUser) ;
-
-  async function checkFirstTime(){
-    const docRef = doc(db, "Users", user?.uid);
-    const docSnap = await getDoc(docRef);
-
-    if (docSnap.exists()) {
-      console.log("working")
-    } 
-    else{
-      await setDoc(doc(db, "Users", user?.uid), { name : user.displayName ,email : user?.email , cart : [] ,id  : user?.uid}).then(()=>{
-        console.log("user made")
-      }).catch((err)=> console.log(err))
-    }
-  }
-
-
-
-
-
 
   useEffect(()=>{
     onAuthStateChanged(auth , (u)=>{
       SetUser(null)
       if (u) {
         SetUser(u);
-        checkFirstTime();
       }
     })
   } ,[])
@@ -65,19 +41,16 @@ function App() {
     
   }
 
-  
-
 
 
   return (
     <div className="App">
       <Navbar user={user} signout={Signout} />
      <Routes>
+      
+      <ProductScreen />
       <Route path="/" element={user ? <HomeScreen /> : <LoginScreen login={Signin} />} />
-      <Route path="/product/:slug" element={<ProductScreen user={user} />} />
-      <Route path="/product/cart" element={<Procced user={user} />} />
-      <Route path="/admin/add-product" element={<ProductAdder />} />
-
+      <Route path="/product/:productId" />
      </Routes>
       
     </div>
